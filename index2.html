@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Validation with Hints</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+    }
+    .error-msg, .hint-msg {
+      color: red;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ui container">
+    <h2 class="ui header">Form Validation</h2>
+    <form class="ui form" id="validationForm">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="text" id="email" value=".@" placeholder="Email">
+        <span class="error-msg" id="emailError"></span>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password">
+        <span class="hint-msg" id="passwordHint">Password must have a special character, a number, an uppercase, and a lowercase letter.</span>
+        <span class="error-msg" id="passwordError"></span>
+      </div>
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Username">
+        <span class="error-msg" id="usernameError"></span>
+      </div>
+      <button class="ui button primary" type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById('validationForm');
+const passwordField = document.getElementById('password');
+const passwordHint = document.getElementById('passwordHint');
+
+passwordHint.style.display = 'none';  
+
+passwordField.addEventListener('focus', function() {
+  passwordHint.style.display = 'block'; 
+});
+
+passwordField.addEventListener('blur', function() {
+  passwordHint.style.display = 'none';  
+});
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+
+  let valid = true;
+
+  if (!validateEmail(email)) {
+    document.getElementById('emailError').textContent = 'Please enter a valid email.';
+    valid = false;
+  } else {
+    document.getElementById('emailError').textContent = '';
+  }
+
+  if (!validatePassword(password)) {
+    document.getElementById('passwordError').textContent = 'Password must be at least 8 characters with 1 upper, 1 lower, 1 special, and 1 number.';
+    valid = false;
+  } else {
+    document.getElementById('passwordError').textContent = '';
+  }
+
+  if (username === '') {
+    document.getElementById('usernameError').textContent = 'Username cannot be empty.';
+    valid = false;
+  } else {
+    document.getElementById('usernameError').textContent = '';
+  }
+
+  if (valid) {
+    alert('Form submitted successfully!');
+    form.reset();
+  }
+});
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validatePassword(password) {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
+}
+
+  </script>
+</body>
+</html>

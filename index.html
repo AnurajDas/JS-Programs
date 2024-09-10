@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Telecounter with Semantic UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+</head>
+<body>
+
+    <div class="ui container" style="margin-top: 50px;">
+        <h1 class="ui center aligned header">Activity Counter</h1>
+
+        <div class="ui input action">
+            <input type="text" id="activityInput" placeholder="New activity">
+            <button class="ui primary button" onclick="add()">Add</button>
+        </div>
+
+        <div id="activityList" class="ui cards" style="margin-top: 30px;"></div>
+    </div>
+
+    <script>
+        const activityList = document.getElementById('activityList');
+
+        function add() {
+            const name = document.getElementById('activityInput').value.trim();
+            if (name === '') return;
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="content">
+                    <div class="header">${name}</div>
+                    <div class="description">
+                        Count: <span id="${name}Count">0</span>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <button class="ui green button" onclick="inc('${name}')">+1</button>
+                    <button class="ui red button" onclick="reset('${name}')">Reset</button>
+                </div>
+            `;
+            activityList.appendChild(card);
+            document.getElementById('activityInput').value = ''; 
+        }
+
+        function inc(name) {
+            const countElement = document.getElementById(`${name}Count`);
+            countElement.innerText = parseInt(countElement.innerText) + 1;
+        }
+
+        function reset(name) {
+            const countElement = document.getElementById(`${name}Count`);
+            countElement.innerText = 0;
+        }
+    </script>
+
+</body>
+</html>
